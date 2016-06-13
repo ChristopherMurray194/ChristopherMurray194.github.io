@@ -17,6 +17,9 @@ body
 	100%{opacity:1;}
 }
 
+p{ color:#303030; font-size:150%;}
+p.date{ color:#595959; font-size:125%;}
+
 div.header_footer
 {
 	width:100%;
@@ -49,15 +52,15 @@ div.header_footer
 }
 #main_text_container
 {
-	padding-left:400px;
-	padding-right:400px;
-	font-size:200%;
+	padding:100px 400px;
+	text-align:left;
 }
 h2
 {
 	font-family: CaviarDreams;
 	color:#00868B;
 	text-decoration:underline;
+	font-size:250%;
 }
 
 @font-face
@@ -76,7 +79,7 @@ h2
 	animation-duration: 1.5s;
 }
 
-#job_role_header
+#sub_heading
 {
 	position:relative;
 	padding:0px;
