@@ -31,6 +31,9 @@ div.header_footer
 
 #footer
 {
+	color:white;
+	font-size:50%;
+	font-family: CaviarDreams, courier, sans-serif;
 	text-align:center;
 }
 
@@ -40,6 +43,10 @@ div.header_footer
 	z-index:-1;
 	color:white;
 	text-align:center;
+	background-image: url(../images/ABaseCharacter_justcode_blurred.png);
+	background-repeat: no-repeat;
+	background-position: top center;
+	background-size:100%;
 	background-color:#00C5CD;	/*turquoise 3*/
 	padding:150px;
 }
@@ -57,14 +64,14 @@ div.header_footer
 }
 h2
 {
-	font-family: CaviarDreams;
+	font-family: CaviarDreams, courier, sans-serif;
 	color:#00868B;
 	text-decoration:underline;
 	font-size:250%;
 }
 h3
 {
-	font-family: CaviarDreams;
+	font-family: CaviarDreams, courier, sans-serif;
 	color:#00868B;
 	text-decoration:none;
 	font-size:250%;
@@ -91,7 +98,7 @@ h3
 	position:relative;
 	padding:0px;
 	margin:0px;
-	font-family: CaviarDreams, Copperplate Gothic Light, serif;
+	font-family: CaviarDreams, courier, sans-serif;
 	font-size:200%;
 	color:#8B795E;
 	animation-name: fade-in;
@@ -114,7 +121,7 @@ h3
 	overflow:hidden;
 	height:100%;
 }
-#social_networks_container
+#networks_container
 {
 	position:absolute;
 	right:0px;
@@ -131,7 +138,7 @@ a{ text-decoration:none; }
 a.nav_element
 {
 	display:inline-block;
-	font-family:CaviarDreams, courier, sans-serif;
+	font-family: CaviarDreams, courier, sans-serif;
 	font-size:150%;
 	height:100%;
 	color:white;
@@ -140,7 +147,7 @@ a.nav_element
 }
 a.nav_element:hover{ background-color:#008080; }	
 
-a.social_network_element
+a.network_element
 {
 	display:inline-block;
 	vertical-align:top;
@@ -150,7 +157,7 @@ a.social_network_element
 	padding-top:5px;
 }
 #linkedin{ padding-top:10px; } /* Push the LinkedIn logo down a little further */
-a.social_network_element:hover{ background-color:#008080; }	
+a.network_element:hover{ background-color:#008080; }	
 
 #main_container{ top:0; margin-top:50px; }
 </style>
