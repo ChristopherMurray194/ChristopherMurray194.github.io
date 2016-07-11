@@ -29,6 +29,12 @@ p.date{ color:#595959; font-size:125%;}
 	font-family: CaviarDreams, courier, sans-serif;
 }
 
+#main_container
+{
+	top:0px;
+	margin-top:50px;
+}
+
 #main_banner_container
 {
 	position:relative; 
@@ -154,6 +160,5 @@ a.nav_element
 	padding:14px 16px;
 }
 a.nav_element:hover{ background-color:#333333; }	
-
 
 </style>
