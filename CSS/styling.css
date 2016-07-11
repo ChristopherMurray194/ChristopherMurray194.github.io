@@ -25,6 +25,7 @@ p.date{ color:#595959; font-size:125%;}
 	color:white;
 	text-align:center;
 	position:relative;
+	height:40px;
 	bottom:0px;
 	font-family: CaviarDreams, courier, sans-serif;
 }
