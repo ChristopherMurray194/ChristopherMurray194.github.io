@@ -50,7 +50,7 @@ p.date{ color:#595959; font-size:125%;}
 div.page_content
 {
 	padding:50px 346px;
-	text-align:left;
+	text-align:center;
 }
 div.project_block
 {
@@ -129,7 +129,9 @@ h3
 }
 #networks_container
 {
-	height:100%;
+	display:inline-block;
+	width:200px;
+	height:50px;
 }
 
 @font-face
@@ -150,17 +152,6 @@ a.nav_element
 	padding:14px 16px;
 }
 a.nav_element:hover{ background-color:#333333; }	
-
-a.network_element
-{
-	display:inline-block;
-	text-align:center;
-	width:50px;
-	height:100%;
-	padding:5px;
-}
-#linkedin{ padding-top:10px; } /* Push the LinkedIn logo down a little further */
-a.network_element:hover{ background-color:#333333; }	
 
 #main_container{ top:0; margin-top:50px; }
 </style>
