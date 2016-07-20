@@ -38,20 +38,17 @@ p.cv{ margin:0px; font-size:150%; }
 
 #main_banner_container
 {
-	position:relative; 
+	top:0px;
 	z-index:-1;
 	color:white;
-	height:630px; /* Height from nav bar to bottom of window */
 	text-align:center;
-	background-size:100% 100%;
-	background-color:#EDEDED;	/* SECONDARY COLOUR */
+	background-color:#EDEDED;
 	padding:150px;
 }
-
 div.page_content
 {
 	height:100%;
-	padding:15px 0px;
+	padding:50px 0px;
 	text-align:center;
 }
 div.project_block
@@ -90,12 +87,9 @@ h3.font
 }
 #heading
 {
-	position:relative;
 	font-family: Ubuntu, Century Gothic, sans-serif;
 	font-size:500%;
 	padding:0px;
-	padding-top:200px;
-	margin:10px;
 	color:black;
 	animation-name: fade-in;
 	animation-duration: 1.5s;
@@ -103,7 +97,6 @@ h3.font
 
 #sub_heading
 {
-	position:relative;
 	padding:0px;
 	margin:0px;
 	font-family: CaviarDreams, courier, sans-serif;
@@ -137,13 +130,17 @@ h3.font
 	height:100%;
 }
 
+.navbar-custom
+{
+	border-bottom: 0px none rgba(0,0,0,0);
+}
+
 .navbar-custom  .navbar-inner
 {
 	background:#3b3b3b;
 	filter: none !important;
 	width:100%;
 	margin:0px;
-	border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
 .navbar-custom .navbar-inner ul.nav > li > a
