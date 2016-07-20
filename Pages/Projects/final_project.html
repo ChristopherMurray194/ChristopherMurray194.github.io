@@ -18,50 +18,87 @@
 </head>
 <!--BODY-->
 <body>
+<div class="container-fluid">
 	<!-- NAVIGATION BAR -->
-	<div id="navigation_bar_container">
-		<div id="navigation_bar">
-			<a class="nav_element" href="../homepage.html" title="Homepage">
-				Home
-			</a>
-			<a class="nav_element" href="../homepage.html#about_me" title="About Me">
-				About Me
-			</a>
-			<a class="nav_element" href="../homepage.html#CV" title="curriculum vitae">
-				CV
-			</a>
-			<a class="nav_element" href="../homepage.html#projects" title="Project">
-				Projects
-			</a>
-			<a class="nav_element" href="../homepage.html#contact_me" title="Contact Me">
-				Contact
-			</a>
+	<nav class="navbar navbar-inverse navbar-fixed-top navbar-custom">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				</div>
+				<div class="collapse navbar-collapse" id="navbar">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a class="nav_element" href="../homepage.html" title="Homepage">
+							Home
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../homepage.html#about_me" title="About Me">
+								About Me
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../homepage.html#CV" title="CV">
+								CV
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../homepage.html#projects" title="Projects">
+								Projects
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../homepage.html#contact_me" title="Contact Me">
+								Contact
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
-	</div>
+	</nav>
 	<!-- END OF NAVIGATION BAR -->
 
 	<!-- MAIN CONTENT -->
 	<div id="main_container">
-		<div id="main_banner_container">
-			<h1 id="heading">Final Year Project</h1>
-			<span id="sub_heading">BSc (Hons) Computer Science (Games)</span>
+		<div class="row">
+			<div class="col-sm-12" id="main_banner_container">
+				<h1 id="heading">Final Year Project</h1>
+				<span id="sub_heading">BSc (Hons) Computer Science (Games)</span>
+			</div>
 		</div>
 		
-		<div class="page_content" id="main_content_container">
-			<video width="800" controls>
-				<source src="../../videos/Final_Project_demo.mp4" type="video/mp4">
-				Your browser version does not support HTML5 video.
-			</video>
+		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8 page_content">
+				<video width="800" controls>
+					<source src="../../videos/Final_Project_demo.mp4" type="video/mp4">
+					Your browser version does not support HTML5 video.
+				</video>
+			</div>
+			<div class="col-sm-2"></div>
 		</div>
 	</div>
 	<!-- END OF MAIN CONTENT -->
 	
 	<!-- FOOTER -->
-	<div id="footer">
-		<p>
-			&copy; Christopher Murray 2016
-		</p>
+	<div class="row">
+		<div class="container-fluid" id="footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8">
+				<p>
+					&copy; Christopher Murray 2016
+				</p>
+			</div>
+			<div class="col-sm-2"></div>
+		</div>
 	</div>
 	<!-- END OF FOOTER -->
+</div>
 </body>
 </html>
