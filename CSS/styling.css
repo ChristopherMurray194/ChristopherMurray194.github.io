@@ -18,13 +18,13 @@ body
 	100%{opacity:1;}
 }
 
-p.date{ color:#595959; font-size:125%;}
-p.cv{ margin:0px; font-size:150%; }
+p.date{ color:#595959; font-size:16px;}
+p.cv{ margin:0px; font-size:20px; }
 
 #footer
 {
 	background-color:#383838;
-	color:white;
+	color:#fff;
 	text-align:center;
 	padding:10px 0px;
 	bottom:0px;
@@ -39,13 +39,12 @@ p.cv{ margin:0px; font-size:150%; }
 
 #main_banner_container
 {
-	top:0px;
 	z-index:-1;
-	color:white;
-	text-align:center;
+	color:#fff;
 	background-color:#EDEDED;
-	padding:150px;
+	padding: 100px 25px;
 }
+
 div.page_content
 {
 	height:100%;
@@ -57,7 +56,7 @@ div.project_block
 	width:400px;
 	height:420px;
 	margin:2px 0px;
-	color:white;
+	color:#fff;
 	display:inline-block;
 }
 img.project_thumbnail
@@ -71,14 +70,16 @@ h2.font
 	font-family: CaviarDreams, courier, sans-serif;
 	color:#333333;
 	text-decoration:underline;
-	font-size:250%;
+	font-size:36px;
+	font-weight:bold;
 }
 h3.font
 {
 	font-family: CaviarDreams, courier, sans-serif;
 	color:#333333;
 	text-decoration:none;
-	font-size:250%;
+	font-size:36px;
+	font-weight:bold;
 }
 
 @font-face
@@ -89,7 +90,6 @@ h3.font
 #heading
 {
 	font-family: Ubuntu, Century Gothic, sans-serif;
-	font-size:500%;
 	padding:0px;
 	color:black;
 	animation-name: fade-in;
@@ -101,16 +101,15 @@ h3.font
 	padding:0px;
 	margin:0px;
 	font-family: CaviarDreams, courier, sans-serif;
-	font-size:200%;
 	color:red;
 	animation-name: fade-in;
 	animation-duration: 1.5s;
 }
 
 /* DEFINE SECTION BACKGROUND COLOURS */
-#about_me{ background-color:white; }
+#about_me{ background-color:#fff; }
 #CV{ background-color:#EDEDED; }
-#projects{ background-color:white; }
+#projects{ background-color:#fff; }
 #contact_me{ background-color:#EDEDED; }
 
 
@@ -121,7 +120,7 @@ h3.font
 	width:100%;
 	overflow:hidden;
 	background-color:#3B3B3B;	/* PRIMARY COLOUR */
-	color:white;
+	color:#fff;
 	height:50px;
 	text-align:center;
 }
@@ -182,9 +181,8 @@ a.nav_element
 {
 	display:inline-block;
 	font-family: CaviarDreams, courier, sans-serif;
-	font-size:150%;
 	height:100%;
-	color:white;
+	color:#fff;
 	
 	padding:14px 16px;
 }
