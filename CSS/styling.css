@@ -68,14 +68,14 @@ img.project_thumbnail
 	height:250px;
 }
 
-h2
+h2.font
 {
 	font-family: CaviarDreams, courier, sans-serif;
 	color:#333333;
 	text-decoration:underline;
 	font-size:250%;
 }
-h3
+h3.font
 {
 	font-family: CaviarDreams, courier, sans-serif;
 	color:#333333;
@@ -136,6 +136,30 @@ h3
 	overflow:hidden;
 	height:100%;
 }
+
+.navbar-custom  .navbar-inner
+{
+	background:#3b3b3b;
+	filter: none !important;
+	width:100%;
+	margin:0px;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+.navbar-custom .navbar-inner ul.nav > li > a
+{
+	background:none;
+	color:#fff;
+	font-size: 20px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.navbar-custom .navbar-inner ul.nav > li > a:hover
+{
+	background-color:#333333;
+}
+
 #networks_container
 {
 	display:inline-block;
