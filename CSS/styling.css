@@ -55,11 +55,12 @@ div.project_block
 {
 	margin:2px 0px;
 	color:#fff;
+	border: 0px none rgba(0,0,0,0);
 }
 img.project_thumbnail
 {
-	width:242px;
-	height:200px;
+	width:400px;
+	height:250px;
 }
 
 h2.font
