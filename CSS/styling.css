@@ -112,24 +112,6 @@ h3.font
 #projects{ background-color:#fff; }
 #contact_me{ background-color:#EDEDED; }
 
-
-#navigation_bar_container
-{
-	position:fixed;
-	top:0;
-	width:100%;
-	overflow:hidden;
-	background-color:#3B3B3B;	/* PRIMARY COLOUR */
-	color:#fff;
-	height:50px;
-	text-align:center;
-}
-#navigation_bar
-{
-	overflow:hidden;
-	height:100%;
-}
-
 .navbar-custom
 {
 	border-bottom: 0px none rgba(0,0,0,0);
