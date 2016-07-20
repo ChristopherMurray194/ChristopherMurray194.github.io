@@ -2,6 +2,7 @@
 html, body{height:100%;}
 body
 {
+	position:relative;
 	margin:0px;
 }
 
@@ -138,6 +139,7 @@ h3.font
 .navbar-custom  .navbar-inner
 {
 	background:#3b3b3b;
+	min-height:50px;
 	filter: none !important;
 	width:100%;
 	margin:0px;
@@ -154,7 +156,12 @@ h3.font
 
 .navbar-custom .navbar-inner ul.nav > li > a:hover
 {
-	background-color:#333333;
+	background-color:#333;
+}
+
+.navbar-custom .navbar-inner ul.nav > .active > a
+{
+	background-color:#333;
 }
 
 #networks_container
