@@ -53,16 +53,13 @@ div.page_content
 }
 div.project_block
 {
-	width:400px;
-	height:420px;
 	margin:2px 0px;
 	color:#fff;
-	display:inline-block;
 }
 img.project_thumbnail
 {
-	width:400px;
-	height:250px;
+	width:242px;
+	height:200px;
 }
 
 h2.font
