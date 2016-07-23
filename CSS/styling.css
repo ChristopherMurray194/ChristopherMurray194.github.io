@@ -18,6 +18,24 @@ body
 	100%{opacity:1;}
 }
 
+@font-face
+{
+	font-family: CaviarDreams;
+	src: url(fonts/caviar_dreams/CaviarDreams.ttf);
+}
+
+@font-face
+{
+	font-family: CaviarDreamsBold;
+	src: url(fonts/caviar_dreams/CaviarDreams_Bold.ttf);
+}
+
+@font-face
+{
+	font-family: Ubuntu;
+	src: url(fonts/ubuntu/Ubuntu-Regular.ttf);
+}
+
 p.date{ color:#595959; font-size:16px;}
 p.cv{ margin:0px; font-size:20px; }
 
@@ -80,11 +98,6 @@ h3.font
 	font-weight:bold;
 }
 
-@font-face
-{
-	font-family: Ubuntu;
-	src: url(fonts/ubuntu/Ubuntu-Regular.ttf);
-}
 #heading
 {
 	font-family: Ubuntu, Century Gothic, sans-serif;
@@ -105,6 +118,15 @@ h3.font
 }
 
 /* DEFINE SECTION BACKGROUND COLOURS */
+#nav-header
+{
+	color:white;
+	font-family: CaviarDreamsBold, courier, sans-serif;
+}
+#nav-header:hover
+{
+	color:red;
+}
 #about_me{ background-color:#fff; }
 #CV{ background-color:#EDEDED; }
 #projects{ background-color:#fff; }
@@ -148,12 +170,6 @@ h3.font
 	display:inline-block;
 	width:200px;
 	height:50px;
-}
-
-@font-face
-{
-	font-family: CaviarDreams;
-	src: url(fonts/caviar_dreams/CaviarDreams.ttf);
 }
 
 a{ text-decoration:none; }
