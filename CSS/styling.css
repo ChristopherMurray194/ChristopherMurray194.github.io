@@ -41,26 +41,29 @@ p.cv{ margin:0px; font-size:20px; }
 
 #footer
 {
-	background-color:#383838;
-	color:#fff;
 	text-align:center;
 	padding:10px 0px;
 	bottom:0px;
 	font-family: CaviarDreams, courier, sans-serif;
 }
 
+#main_banner
+{
+	background-color:#3CB371;
+	z-index:-1;
+	padding: 100px 25px;
+	margin-bottom:0px;
+}
+
 #main_container
 {
 	top:0px;
-	margin-top:50px;
 }
 
-#main_banner_container
+div.navbar-footer
 {
-	z-index:-1;
 	color:#fff;
-	background-color:#EDEDED;
-	padding: 100px 25px;
+	background-color:#698B69;
 }
 
 div.page_content
@@ -73,6 +76,7 @@ div.project_block
 {
 	margin:2px 0px;
 	color:#fff;
+	background-color:#EDEDED;
 	border: 0px none rgba(0,0,0,0);
 }
 img.project_thumbnail
@@ -127,10 +131,10 @@ h3.font
 {
 	color:red;
 }
-#about_me{ background-color:#fff; }
-#CV{ background-color:#EDEDED; }
-#projects{ background-color:#fff; }
-#contact_me{ background-color:#EDEDED; }
+#about_me{ background-color:#EDEDED; }
+#CV{ background-color:#3CB371; }
+#projects{ background-color:#EDEDED; }
+#contact_me{ background-color:#3CB371; }
 
 .navbar-custom
 {
@@ -139,7 +143,7 @@ h3.font
 
 .navbar-custom  .navbar-inner
 {
-	background:#3b3b3b;
+	background:#3CB371;
 	min-height:50px;
 	filter: none !important;
 	width:100%;
