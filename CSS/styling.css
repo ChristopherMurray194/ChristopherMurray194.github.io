@@ -105,7 +105,7 @@ h3.font
 {
 	font-family: Ubuntu, Century Gothic, sans-serif;
 	padding:0px;
-	color:#333333
+	color:#333333;
 	animation-name: fade-in;
 	animation-duration: 1.5s;
 }
@@ -115,7 +115,7 @@ h3.font
 	padding:0px;
 	margin:0px;
 	font-family: CaviarDreams, courier, sans-serif;
-	color:#333333
+	color:#333333;
 	animation-name: fade-in;
 	animation-duration: 1.5s;
 }
