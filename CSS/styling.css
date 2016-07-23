@@ -49,7 +49,7 @@ p.cv{ margin:0px; font-size:20px; }
 
 #main_banner
 {
-	background-color:#3CB371;
+	background-color:#CD4F39;
 	z-index:-1;
 	padding: 100px 25px;
 	margin-bottom:0px;
@@ -63,7 +63,7 @@ p.cv{ margin:0px; font-size:20px; }
 div.navbar-footer
 {
 	color:#fff;
-	background-color:#698B69;
+	background-color:#8B3626;
 }
 
 div.page_content
@@ -76,7 +76,6 @@ div.project_block
 {
 	margin:2px 0px;
 	color:#fff;
-	background-color:#EDEDED;
 	border: 0px none rgba(0,0,0,0);
 }
 img.project_thumbnail
@@ -106,7 +105,7 @@ h3.font
 {
 	font-family: Ubuntu, Century Gothic, sans-serif;
 	padding:0px;
-	color:black;
+	color:#333333
 	animation-name: fade-in;
 	animation-duration: 1.5s;
 }
@@ -116,7 +115,7 @@ h3.font
 	padding:0px;
 	margin:0px;
 	font-family: CaviarDreams, courier, sans-serif;
-	color:red;
+	color:#333333
 	animation-name: fade-in;
 	animation-duration: 1.5s;
 }
@@ -129,12 +128,12 @@ h3.font
 }
 #nav-header:hover
 {
-	color:red;
+	color:#CD4F39;
 }
 #about_me{ background-color:#EDEDED; }
-#CV{ background-color:#3CB371; }
-#projects{ background-color:#EDEDED; }
-#contact_me{ background-color:#3CB371; }
+#CV{ background-color:#CD4F39; }
+.projects{ background-color:#EDEDED; }
+#contact_me{ background-color:#CD4F39; }
 
 .navbar-custom
 {
@@ -143,7 +142,6 @@ h3.font
 
 .navbar-custom  .navbar-inner
 {
-	background:#3CB371;
 	min-height:50px;
 	filter: none !important;
 	width:100%;
@@ -161,12 +159,12 @@ h3.font
 
 .navbar-custom .navbar-inner ul.nav > li > a:hover
 {
-	background-color:#333;
+	background-color:#5E2612;
 }
 
 .navbar-custom .navbar-inner ul.nav > .active > a
 {
-	background-color:#333;
+	background-color:#5E2612;
 }
 
 #networks_container
