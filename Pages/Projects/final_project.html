@@ -31,6 +31,15 @@
 			<div class="container-fluid navbar-footer">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+					<script>
+						$(document).on('click','.navbar-collapse.in',function(e) 
+						{
+							if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) 
+							{
+								$(this).collapse('hide');
+							}
+						});
+					</script>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
