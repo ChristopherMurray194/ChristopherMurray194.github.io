@@ -101,6 +101,11 @@ h3.font
 	font-weight:bold;
 }
 
+#headshot
+{
+	border-radius:3%;
+}
+
 #heading
 {
 	font-family: Ubuntu, Century Gothic, sans-serif;
