@@ -60,12 +60,6 @@ p.cv{ margin:0px; font-size:20px; }
 	top:0px;
 }
 
-div.navbar-footer
-{
-	color:#fff;
-	background-color:#8B3626;
-}
-
 div.page_content
 {
 	height:100%;
@@ -125,7 +119,6 @@ h3.font
 	animation-duration: 1.5s;
 }
 
-/* DEFINE SECTION BACKGROUND COLOURS */
 #nav-header
 {
 	color:white;
@@ -135,10 +128,17 @@ h3.font
 {
 	color:#CD4F39;
 }
+
+/* DEFINE SECTION BACKGROUND COLOURS */
 #about_me{ background-color:#EDEDED; }
-#CV{ background-color:#CD4F39; }
-.projects{ background-color:#EDEDED; }
-#contact_me{ background-color:#CD4F39; }
+.projects{ background-color:#CD4F39; }
+#contact_me{ background-color:#EDEDED; }
+
+div.navbar-footer
+{
+	color:#fff;
+	background-color:#8B3626;
+}
 
 .navbar-custom
 {
