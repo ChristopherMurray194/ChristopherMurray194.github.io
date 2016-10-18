@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!--HEAD-->
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="../../CSS/styling.css">
+	
+	<!-- UNITY WEB PLAYER GENERATED PAGE LINKS -->
+	<link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <script src="TemplateData/UnityProgress.js"></script>
+	<!------------------------------------------->
+	
+	<title>Village Defender</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<!--BODY-->
+<body class="template" data-spy="scroll" data-target=".navbar-custom" data-offset="50">
+
+<div class="jumbotron text-center" id="main_banner">
+	<h1 id="heading">Village Defender</h1>
+	<p id="sub_heading">First Unity Project</p>
+</div>
+
+<div class="container-fluid">
+	<!-- NAVIGATION BAR -->
+	<nav class="navbar navbar-inverse navbar-fixed-top navbar-custom navbar-footer">
+		<div class="navbar-inner">
+			<div class="container-fluid navbar-footer">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+					<script>
+						$(document).on('click','.navbar-collapse.in',function(e) 
+						{
+							if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) 
+							{
+								$(this).collapse('hide');
+							}
+						});
+					</script>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" id="nav-header" href="../../index.html">CHRIS MURRAY</a>
+				</div>
+				<div class="collapse navbar-collapse" id="navbar">
+					<ul class="nav navbar-nav">
+						<li>
+							<a class="nav_element" href="../../index.html#about_me" title="About Me">
+								About Me
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../../CV/chris_murray_cv.pdf" title="View CV">
+								View CV
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../../index.html#projects" title="Projects">
+								Projects
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../../index.html#contact_me" title="Contact Me">
+								Contact
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- END OF NAVIGATION BAR -->
+
+	<!-- MAIN CONTENT -->
+	<div id="main_container">
+		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8 page_content">
+				<p class="header"><span>Unity WebGL Player | </span>VillageDefender</p>
+				<div>
+				  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
+				  <br>
+				  <div class="logo"></div>
+				  <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
+				  <div class="title">VillageDefender</div>
+				</div>
+				<p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
+				<script type='text/javascript'>
+				  var Module = {
+					TOTAL_MEMORY: 268435456,
+					errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
+					compatibilitycheck: null,
+					dataUrl: "Development/Build.data",
+					codeUrl: "Development/Build.js",
+					memUrl: "Development/Build.mem",
+					
+				  };
+				</script>
+				<script src="Development/UnityLoader.js"></script>
+				</div>
+			<div class="col-sm-2"></div>
+		</div>
+	</div>
+	<!-- END OF MAIN CONTENT -->
+	
+	<!-- FOOTER -->
+	<div class="row">
+		<div class="container-fluid navbar-footer" id="footer">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-8">
+				<p>
+					&copy; Christopher Murray 2016
+				</p>
+			</div>
+			<div class="col-sm-2"></div>
+		</div>
+	</div>
+	<!-- END OF FOOTER -->
+</div>
+</body>
+</html>
