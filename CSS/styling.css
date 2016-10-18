@@ -36,7 +36,7 @@ body
 	src: url(fonts/ubuntu/Ubuntu-Regular.ttf);
 }
 
-p.date{ color:#595959; font-size:16px;}
+p.date{ color:#333333; font-size:16px;}
 p.cv{ margin:0px; font-size:20px; }
 
 #footer
