@@ -85,31 +85,87 @@
 	<!-- MAIN CONTENT -->
 	<div id="main_container">
 		<div class="row">
-			<div class="col-sm-2"></div>
-			<div class="col-sm-8 page_content">
-				<p class="header"><span>Unity WebGL Player | </span>VillageDefender</p>
-				<div>
-				  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
-				  <br>
-				  <div class="logo"></div>
-				  <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
-				  <div class="title">VillageDefender</div>
+			<div class="container-fluid">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8 page_content">
+					<div style="text-align:left;">
+						<p class="font">
+							This game is my first project using the <b><a href="https://unity3d.com/" title="Go to unity3d.com">Unity</a></b> Game Engine. I began development on this project on the 2nd October 
+							2016. The current demo (posted 18/10/2016) is an early version with many bugs still present and features missing.
+							<br />
+							All assets used in the game are free assets from the <b><a href="https://www.assetstore.unity3d.com/en/" title="Go to Unity asset store">Unity asset store</a></b>. The list of assets
+							used can be found below the web player.
+						</p>
+						<p class="font"> 
+							IMPORTANT NOTE: Unfortunately there is currently no support for the Unity web player on Google Chrome. To play the demo you will have to open this page in Firefox, 
+							Safari, Opera, or Internet Explorer.
+						</p>
+					</div>
 				</div>
-				<p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
-				<script type='text/javascript'>
-				  var Module = {
-					TOTAL_MEMORY: 268435456,
-					errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
-					compatibilitycheck: null,
-					dataUrl: "Development/Build.data",
-					codeUrl: "Development/Build.js",
-					memUrl: "Development/Build.mem",
-					
-				  };
-				</script>
-				<script src="Development/UnityLoader.js"></script>
+				<div class="col-sm-2"></div>
+			</div>
+		</div>
+				
+		<div class="row">
+			<div class="container-fluid">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8 page_content">
+					<!-- BEGINNING OF UNITY WEB PLAYER -->
+					<p class="header"><span>Unity WebGL Player | </span>VillageDefender</p>
+					<div>
+					  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
+					  <br>
+					  <div class="logo"></div>
+					  <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
+					  <div class="title">VillageDefender</div>
+					</div>
+					<p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
+					<script type='text/javascript'>
+					  var Module = {
+						TOTAL_MEMORY: 268435456,
+						errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
+						compatibilitycheck: null,
+						dataUrl: "Development/Build.data",
+						codeUrl: "Development/Build.js",
+						memUrl: "Development/Build.mem",
+						
+					  };
+					</script>
+					<script src="Development/UnityLoader.js"></script>
+					<!-- END OF UNITY WEB PLAYER -->
 				</div>
-			<div class="col-sm-2"></div>
+				<div class="col-sm-2"></div>
+			</div>
+		</div>	
+		
+		<div class="row">
+			<div class="container-fluid">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8 page_content">
+					<div style="text-align:left;">
+						<p>
+							<h2 class="font">Environment</h2>
+							<a href="https://www.assetstore.unity3d.com/en/#!/content/27026" title="Medieval Town Exteriors asset">Medieval Town Exteriors</a><br />
+							
+							<h2 class="font">Characters</h2>
+							<a href="https://www.assetstore.unity3d.com/en/#!/content/72070" title="Footman asset">Footman with Sword & Shield (Protagonist)</a><br />
+							<a href="https://www.assetstore.unity3d.com/en/#!/content/35635" title="Fantasy Monster asset">Fantasy Monster - Skeleton (Enemy)</a><br />
+							
+							<h2 class="font">Particles</h2>
+							<a href="https://www.assetstore.unity3d.com/en/#!/content/16166" title="Liquid Toon VFX Texture asset">Liquid Toon VFX Texture (blood)</a><br />
+
+							<h2 class="font">Audio</h2>
+							<a href="https://www.assetstore.unity3d.com/en/#!/content/7208" title="The Combat Collection STARTER asset">Epic background music</a><br />
+							<a href="https://www.freesound.org/people/Artmasterrich/sounds/345438/" title="player hurt audio clip">player hurt</a><br />
+							<a href="https://www.freesound.org/people/thestigmata/sounds/202037/" title="Man dying audio clip">man dying</a><br />
+
+							<h2 class="font">UI</h2>
+							<a href="https://www.assetstore.unity3d.com/en/#!/content/366" title="Necromancer GUI asset">Necromancer GUI</a><br />
+						</p>
+					</div>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
 		</div>
 	</div>
 	<!-- END OF MAIN CONTENT -->
