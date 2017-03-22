@@ -55,11 +55,11 @@
 				</div>
 				<div class="collapse navbar-collapse" id="navbar">
 					<ul class="nav navbar-nav">
-						<li>
+						<!-- <li>
 							<a class="nav_element" href="../../index.html#about_me" title="About Me">
 								About Me
 							</a>
-						</li>
+						</li> -->
 						<li>
 							<a class="nav_element" href="../../CV/chris_murray_cv.pdf" title="View CV">
 								View CV
@@ -90,14 +90,13 @@
 				<div class="col-sm-8 page_content">
 					<div style="text-align:left;">
 						<p class="font">
-							This game is my first project using the <b><a href="https://unity3d.com/" title="Go to unity3d.com">Unity</a></b> Game Engine. I began development on this project on the 2nd October 
-							2016. The current demo (posted 18/10/2016) is an early version with many bugs still present and features missing.
+							This game is my first project using the <b><a href="https://unity3d.com/" title="Go to unity3d.com">Unity</a></b> Game Engine. I began development on this project on the 2nd October 2016. The purpose of this project was to get to grips with the basics of the Unity engine and writing scripts in C# - neither of which I had used prior - by extending the survival shooter official Unity tutorial. 
 							<br />
 							All assets used in the game are free assets from the <b><a href="https://www.assetstore.unity3d.com/en/" title="Go to Unity asset store">Unity asset store</a></b>. The list of assets
 							used can be found below the web player.
 						</p>
 						<p class="font"> 
-							IMPORTANT NOTE: Unfortunately there is currently no support for the Unity web player on Google Chrome. To play the demo you will have to open this page in Firefox, 
+							If the web player does not work in Chrome try to open this page in Firefox, 
 							Safari, Opera, or Internet Explorer.
 						</p>
 					</div>
@@ -111,7 +110,6 @@
 				<div class="col-sm-2"></div>
 				<div class="col-sm-8 page_content">
 					<!-- BEGINNING OF UNITY WEB PLAYER -->
-					<p class="header"><span>Unity WebGL Player | </span>VillageDefender</p>
 					<div>
 					  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
 					  <br>
@@ -119,16 +117,17 @@
 					  <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
 					  <div class="title">VillageDefender</div>
 					</div>
-					<p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
 					<script type='text/javascript'>
 					  var Module = {
 						TOTAL_MEMORY: 268435456,
 						errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
 						compatibilitycheck: null,
+						backgroundColor: "#222C36",
+						splashStyle: "Light",
 						dataUrl: "Development/Build.data",
 						codeUrl: "Development/Build.js",
+						asmUrl: "Development/Build.asm.js",
 						memUrl: "Development/Build.mem",
-						
 					  };
 					</script>
 					<script src="Development/UnityLoader.js"></script>

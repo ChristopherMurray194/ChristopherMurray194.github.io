@@ -42,6 +42,11 @@ p.font
 	color:#333333;
 	font-size:20px;
 }
+p.para
+{
+	text-align:left;
+	font-size:20px;
+}
 p.date{ color:#333333; font-size:16px;}
 p.cv{ margin:0px; font-size:20px; }
 
@@ -137,7 +142,7 @@ h3.font
 
 /* DEFINE SECTION BACKGROUND COLOURS */
 #about_me{ background-color:#EDEDED; }
-.projects{ background-color:#CD4F39; }
+.projects{ background-color:#FFFFFF; }
 #contact_me{ background-color:#EDEDED; }
 
 div.navbar-footer

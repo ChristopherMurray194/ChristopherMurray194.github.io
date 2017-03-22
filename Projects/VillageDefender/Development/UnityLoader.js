@@ -1,257 +1,3 @@
-function LoadJSCodeBlob(blob, onload)
-{
-	var script = document.createElement('script');
-	script.src = URL.createObjectURL(blob);
-	script.onload = onload;
-	document.body.appendChild(script);	
-}
-
-function LoadJSCode(code, onload)
-{
-  // Math.fround opitimization is currently disabled for Chrome as it causes floating point related issues (i.e. in comparison operations involving both float and double)
-  if (!Math.fround) {
-    console.log('optimizing out Math.fround calls');
-    
-    var State = {
-      LOOKING_FOR_MODULE: 0,
-      SCANNING_MODULE_VARIABLES: 1,
-      SCANNING_MODULE_FUNCTIONS: 2,
-    };
-    var stateSwitchMarker = [
-      "EMSCRIPTEN_START_ASM",
-      "EMSCRIPTEN_START_FUNCS",
-      "EMSCRIPTEN_END_FUNCS",
-    ];
-    var froundPrefix = "var";
-    var froundMarker = "global.Math.fround;";
-    
-    var position = 0;
-    var state = State.LOOKING_FOR_MODULE;
-    var froundLast = 0;
-    var froundLength = 0;
-        
-    for(; state <= State.SCANNING_MODULE_FUNCTIONS && position < code.length; position++) {
-      if (code[position] == 0x2F && code[position + 1] == 0x2F && code[position + 2] == 0x20 &&
-          String.fromCharCode.apply(null, code.subarray(position + 3, position + 3 + stateSwitchMarker[state].length)) === stateSwitchMarker[state]) {
-        // if code at position starts with "// " + stateSwitchMarker[state]
-        state++;
-      } else if (state == State.SCANNING_MODULE_VARIABLES && !froundLength && code[position] == 0x3D &&
-          String.fromCharCode.apply(null, code.subarray(position + 1, position + 1 + froundMarker.length)) === froundMarker) {
-        // if we are at the module variable section and Math_fround name has not yet been found and code at position starts with "=" + froundMarker
-        froundLast = position - 1;
-        while(code[froundLast - froundLength] != 0x20)
-          froundLength++; // scan back until the first space character (it is always present as at least it is a part of the previously found "// ")
-        if (!froundLength || String.fromCharCode.apply(null, code.subarray(froundLast - froundLength - froundPrefix.length, froundLast - froundLength)) !== froundPrefix)
-          froundLast = froundLength = 0;
-      } else if (froundLength && code[position] == 0x28) {
-        // if Math_fround name has been found and code at position starts with "("
-        var nameLength = 0;
-        while (nameLength < froundLength && code[position - 1 - nameLength] == code[froundLast - nameLength])
-          nameLength++;
-        if (nameLength == froundLength) {
-          var c = code[position - 1 - nameLength];
-          if (c < 0x24 || (0x24 < c && c < 0x30) || (0x39 < c && c < 0x41) || (0x5A < c && c < 0x5F) || (0x5F < c && c < 0x61) || 0x7A < c) {
-            // if the matched Math_fround name is not a suffix of another identifier, i.e. it's preceding character does not match [$0-9A-Z_a-z]
-            for(;nameLength; nameLength--)
-              code[position - nameLength] = 0x20; // fill the Math_fround name with spaces (replacement works faster than shifting back the rest of the code)
-          }
-        }
-      }            
-    }
-  }
-  LoadJSCodeBlob(new Blob([code], { type: 'text/javascript' }), onload);
-}
-
-
-var 
-
-CompressionState = {
-    Uninitialized : 0,
-    Pending : 1,
-    Unsupported : 2,
-    Supported : 3,
-    current : 0,
-    pendingServerRequests: [],
-    Set: function(state) {
-		if (CompressionState.current == CompressionState.Pending)
-		{
-			CompressionState.current = state;
-			for(var i=0;i<CompressionState.pendingServerRequests.length; i++)
-			{
-				CompressionState.pendingServerRequests[i]();
-			}
-		}
-    }
-};
-
-function DecompressAndLoadFile(url, onload, onprogress)
-{
-	url += "gz";
-
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url, true);
-	xhr.onprogress = onprogress;
-	xhr.responseType = 'arraybuffer';
-	xhr.onload = function() {
-		var byteArray = new Uint8Array(xhr.response);
-		var start = new Date().getTime();
-		var decompressed = pako.inflate(byteArray);
-		var end = new Date().getTime();
-		console.log ("Decompressed " + url + " in " + (end-start) + "ms. You can remove this delay if you configure your web server to host files using gzip compression.");
-   		onload(decompressed);
-	};
-	xhr.onerror = function() {
-		// Edge fails trying to download from file://...
-		console.log("Could not download " + url);
-
-		if (!didShowErrorMessage && document.URL.indexOf("file:") == 0)
-		{
-			alert ("It seems your browser does not support running Unity WebGL content from file:// urls. Please upload it to an http server, or try a different browser.");
-			didShowErrorMessage = true;
-		}		
-	}
-	xhr.send(null);
-}
-
-function LoadCompressedFile(url, onload, onprogress)
-{
-	if (CompressionState.current == CompressionState.Unsupported)
-	{
-		DecompressAndLoadFile(url, onload);
-		return;
-	}
-
-	if (CompressionState.current == CompressionState.Pending)
-	{
-		CompressionState.pendingServerRequests.push(function (){LoadCompressedFile(url, onload, onprogress);});
-		return;
-	}
-
-	if (CompressionState.current == CompressionState.Uninitialized)
-		CompressionState.current = CompressionState.Pending;
-
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url, true);
-	xhr.responseType = 'arraybuffer';
-	xhr.onprogress = function(event) {
-		if (onprogress)
-			onprogress(event);
-		if (CompressionState.current == CompressionState.Pending)
-		{
-			if (xhr.status == 0 || xhr.status == 200)
-				CompressionState.Set(CompressionState.Supported);
-			else
-				CompressionState.Set(CompressionState.Unsupported);			
-		}
-	};
-	xhr.onload = function() {
-		if (xhr.status == 0 || xhr.status == 200)
-		{
-			CompressionState.Set(CompressionState.Supported);
-			var byteArray = new Uint8Array(xhr.response);
-			onload(byteArray);  
-		}
-		else
-		{
-			// server is not setup for serving compressed files
-			CompressionState.Set(CompressionState.Unsupported);
-			DecompressAndLoadFile(url, onload, onprogress);
-		}
-	};
-
-	xhr.onerror = function() {
-		// when using file:// protocol, onerror callback may be called if the file does not exist
-		CompressionState.Set(CompressionState.Unsupported);
-		DecompressAndLoadFile(url, onload, onprogress);
-	};
-
-	try {
-		xhr.send(null);
-	}
-	catch (err)
-	{
-		// when using file:// protocol, send may throw an exception if the file does not exist
-		CompressionState.Set(CompressionState.Unsupported);
-		DecompressAndLoadFile(url, onload, onprogress);
-	}
-}
-
-function LoadCompressedJS(url, onload)
-{
-	LoadCompressedFile (url, function(response)
-	{
-		LoadJSCode (response, onload);		
-	});
-}
-
-Module["memoryInitializerRequest"]={
-	response: null, 
-	callback: null, 
-	addEventListener: function(type, callback)
-	{
-		if (type != 'load')
-			throw "Unexpected type " + type;
-
-		this.callback = callback;
-	}
-};
-
-function fetchRemotePackageWrapper (packageName, packageSize, callback, errback)
-{
-	LoadCompressedFile(packageName, callback, function(event) {
-		var url = packageName;
-		var size = packageSize;
-		if (event.total) size = event.total;
-		if (event.loaded) {
-			if (!Module.dataFileDownloads) Module.dataFileDownloads = {};
-			Module.dataFileDownloads[url] = {
-				loaded: event.loaded,
-				total: size
-			};
-			var total = 0;
-			var loaded = 0;
-			var num = 0;
-			for (var download in Module.dataFileDownloads) {
-				var data = Module.dataFileDownloads[download];
-				total += data.total;
-				loaded += data.loaded;
-				num++;
-			}
-			total = Math.ceil(total * Module.expectedDataFileDownloads/num);
-			if (Module['setStatus']) Module['setStatus']('Downloading data... (' + loaded + '/' + total + ')');
-			} else if (!Module.dataFileDownloads) {
-			if (Module['setStatus']) Module['setStatus']('Downloading data...');
-		}
-	});
-}
-
-// Kick off actual loads.
-function SetIndexedDBAndLoadCompressedJS(idb) {
-  if (SetIndexedDBAndLoadCompressedJS.called)
-    return;
-  SetIndexedDBAndLoadCompressedJS.called = true;
-  Module.indexedDB = idb;  
-  LoadCompressedJS(Module["codeUrl"]);
-}
-
-try {
-  var idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-  var testRequest = idb.open("/idbfs-test");
-  testRequest.onerror = function(e) { e.preventDefault(); SetIndexedDBAndLoadCompressedJS(); }
-  testRequest.onsuccess = function() { testRequest.result.close(); SetIndexedDBAndLoadCompressedJS(idb); }
-  setTimeout(function() { SetIndexedDBAndLoadCompressedJS(); }, 1000);
-} catch (e) {
-  SetIndexedDBAndLoadCompressedJS();
-}
-
-LoadCompressedFile (Module["memUrl"], function(response) {
-	Module["memoryInitializerRequest"].response = response;
-	if (Module["memoryInitializerRequest"].callback)
-	  Module["memoryInitializerRequest"].callback();
-});
-
-
-
 /* pako 0.2.7 nodeca/pako */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.pako = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
@@ -3301,6 +3047,292 @@ exports.ungzip  = inflate;
 
 },{"./utils/common":1,"./utils/strings":2,"./zlib/constants":4,"./zlib/gzheader":6,"./zlib/inflate.js":8,"./zlib/messages":10,"./zlib/zstream":11}]},{},[])("/lib/inflate.js")
 });
+window.unityDecompressReleaseFile = pako.inflate;
+window.unityDecompressReleaseFileExtension = "gz";
+
+function LoadJSCodeBlob(blob, onload, blobInfo) {
+	var script = document.createElement('script');
+	var blobUrl = URL.createObjectURL(blob);
+	if (blobInfo) {
+		if (!Module.blobInfo)
+			Module.blobInfo = {};
+		Module.blobInfo[blobUrl] = blobInfo;
+	}
+	script.src = blobUrl;
+	script.onload = function() {
+		URL.revokeObjectURL(blobUrl);
+		if (onload)
+			onload();
+	};
+	document.body.appendChild(script);
+}
+
+function LoadJSCode(code, onload, blobInfo)
+{
+  // Math.fround opitimization is currently disabled for Chrome as it causes floating point related issues (i.e. in comparison operations involving both float and double)
+  if (!Math.fround && blobInfo && blobInfo.id == 'asmUrl') {
+    console.log('optimizing out Math.fround calls');
+    
+    var State = {
+      LOOKING_FOR_MODULE: 0,
+      SCANNING_MODULE_VARIABLES: 1,
+      SCANNING_MODULE_FUNCTIONS: 2,
+    };
+    var stateSwitchMarker = [
+      "EMSCRIPTEN_START_ASM",
+      "EMSCRIPTEN_START_FUNCS",
+      "EMSCRIPTEN_END_FUNCS",
+    ];
+    var froundPrefix = "var";
+    var froundMarker = "global.Math.fround;";
+    
+    var position = 0;
+    var state = State.LOOKING_FOR_MODULE;
+    var froundLast = 0;
+    var froundLength = 0;
+        
+    for(; state <= State.SCANNING_MODULE_FUNCTIONS && position < code.length; position++) {
+      if (code[position] == 0x2F && code[position + 1] == 0x2F && code[position + 2] == 0x20 &&
+          String.fromCharCode.apply(null, code.subarray(position + 3, position + 3 + stateSwitchMarker[state].length)) === stateSwitchMarker[state]) {
+        // if code at position starts with "// " + stateSwitchMarker[state]
+        state++;
+      } else if (state == State.SCANNING_MODULE_VARIABLES && !froundLength && code[position] == 0x3D &&
+          String.fromCharCode.apply(null, code.subarray(position + 1, position + 1 + froundMarker.length)) === froundMarker) {
+        // if we are at the module variable section and Math_fround name has not yet been found and code at position starts with "=" + froundMarker
+        froundLast = position - 1;
+        while(code[froundLast - froundLength] != 0x20)
+          froundLength++; // scan back until the first space character (it is always present as at least it is a part of the previously found "// ")
+        if (!froundLength || String.fromCharCode.apply(null, code.subarray(froundLast - froundLength - froundPrefix.length, froundLast - froundLength)) !== froundPrefix)
+          froundLast = froundLength = 0;
+      } else if (froundLength && code[position] == 0x28) {
+        // if Math_fround name has been found and code at position starts with "("
+        var nameLength = 0;
+        while (nameLength < froundLength && code[position - 1 - nameLength] == code[froundLast - nameLength])
+          nameLength++;
+        if (nameLength == froundLength) {
+          var c = code[position - 1 - nameLength];
+          if (c < 0x24 || (0x24 < c && c < 0x30) || (0x39 < c && c < 0x41) || (0x5A < c && c < 0x5F) || (0x5F < c && c < 0x61) || 0x7A < c) {
+            // if the matched Math_fround name is not a suffix of another identifier, i.e. it's preceding character does not match [$0-9A-Z_a-z]
+            for(;nameLength; nameLength--)
+              code[position - nameLength] = 0x20; // fill the Math_fround name with spaces (replacement works faster than shifting back the rest of the code)
+          }
+        }
+      }            
+    }
+  }
+  LoadJSCodeBlob(new Blob([code], { type: 'text/javascript' }), onload, blobInfo);
+}
+
+
+var 
+
+CompressionState = {
+    Uninitialized : 0,
+    Pending : 1,
+    Unsupported : 2,
+    Supported : 3,
+    current : 0,
+    pendingServerRequests: [],
+    Set: function(state) {
+		if (CompressionState.current == CompressionState.Pending)
+		{
+			CompressionState.current = state;
+			for(var i=0;i<CompressionState.pendingServerRequests.length; i++)
+			{
+				CompressionState.pendingServerRequests[i]();
+			}
+		}
+    }
+};
+
+function DecompressAndLoadFile(url, onload, onprogress)
+{
+	url += window.unityDecompressReleaseFileExtension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.onprogress = onprogress;
+	xhr.responseType = 'arraybuffer';
+	xhr.onload = function() {
+		var byteArray = new Uint8Array(xhr.response);
+		var start = new Date().getTime();
+		var decompressed = window.unityDecompressReleaseFile(byteArray);
+		var end = new Date().getTime();
+		console.log ("Decompressed " + url + " in " + (end-start) + "ms. You can remove this delay if you configure your web server to host files using " + window.unityDecompressReleaseFileExtension + " compression.");
+   		onload(decompressed);
+	};
+	xhr.onerror = function() {
+		// Edge fails trying to download from file://...
+		console.log("Could not download " + url);
+
+		if (!didShowErrorMessage && document.URL.indexOf("file:") == 0)
+		{
+			alert ("It seems your browser does not support running Unity WebGL content from file:// urls. Please upload it to an http server, or try a different browser.");
+			didShowErrorMessage = true;
+		}		
+	}
+	xhr.send(null);
+}
+
+function LoadCompressedFile(url, onload, onprogress)
+{
+	if (CompressionState.current == CompressionState.Unsupported)
+	{
+		DecompressAndLoadFile(url, onload);
+		return;
+	}
+
+	if (CompressionState.current == CompressionState.Pending)
+	{
+		CompressionState.pendingServerRequests.push(function (){LoadCompressedFile(url, onload, onprogress);});
+		return;
+	}
+
+	if (CompressionState.current == CompressionState.Uninitialized)
+		CompressionState.current = CompressionState.Pending;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.responseType = 'arraybuffer';
+	xhr.onprogress = function(event) {
+		if (onprogress)
+			onprogress(event);
+		if (CompressionState.current == CompressionState.Pending)
+		{
+			if (xhr.status == 0 || xhr.status == 200)
+				CompressionState.Set(CompressionState.Supported);
+			else
+				CompressionState.Set(CompressionState.Unsupported);			
+		}
+	};
+	xhr.onload = function() {
+		if (xhr.status == 0 || xhr.status == 200)
+		{
+			CompressionState.Set(CompressionState.Supported);
+			var byteArray = new Uint8Array(xhr.response);
+			onload(byteArray);  
+		}
+		else
+		{
+			// server is not setup for serving compressed files
+			CompressionState.Set(CompressionState.Unsupported);
+			DecompressAndLoadFile(url, onload, onprogress);
+		}
+	};
+
+	xhr.onerror = function() {
+		// when using file:// protocol, onerror callback may be called if the file does not exist
+		CompressionState.Set(CompressionState.Unsupported);
+		DecompressAndLoadFile(url, onload, onprogress);
+	};
+
+	try {
+		xhr.send(null);
+	}
+	catch (err)
+	{
+		// when using file:// protocol, send may throw an exception if the file does not exist
+		CompressionState.Set(CompressionState.Unsupported);
+		DecompressAndLoadFile(url, onload, onprogress);
+	}
+}
+
+function LoadCompressedJS(url, onload, blobInfo)
+{
+	LoadCompressedFile (url, function(response)
+	{
+		if (blobInfo)
+			blobInfo.url = url;
+		LoadJSCode (response, onload, blobInfo);
+	});
+}
+
+Module["memoryInitializerRequest"]={
+	status: -1,
+	response: null, 
+	callback: null, 
+	addEventListener: function(type, callback)
+	{
+		if (type != 'load')
+			throw "Unexpected type " + type;
+
+		this.callback = callback;
+	}
+};
+
+function fetchRemotePackageWrapper (packageName, packageSize, callback, errback)
+{
+	LoadCompressedFile(packageName, function proxyCallback(data) { callback(data.buffer); }, function(event) {
+		var url = packageName;
+		var size = packageSize;
+		if (event.total) size = event.total;
+		if (event.loaded) {
+			if (!Module.dataFileDownloads) Module.dataFileDownloads = {};
+			Module.dataFileDownloads[url] = {
+				loaded: event.loaded,
+				total: size
+			};
+			var total = 0;
+			var loaded = 0;
+			var num = 0;
+			for (var download in Module.dataFileDownloads) {
+				var data = Module.dataFileDownloads[download];
+				total += data.total;
+				loaded += data.loaded;
+				num++;
+			}
+			total = Math.ceil(total * Module.expectedDataFileDownloads/num);
+			if (Module['setStatus']) Module['setStatus']('Downloading data... (' + loaded + '/' + total + ')');
+			} else if (!Module.dataFileDownloads) {
+			if (Module['setStatus']) Module['setStatus']('Downloading data...');
+		}
+	});
+}
+
+// Kick off actual loads.
+function SetIndexedDBAndLoadCompressedJS(idb) {
+  if (SetIndexedDBAndLoadCompressedJS.called)
+    return;
+  SetIndexedDBAndLoadCompressedJS.called = true;
+  Module.indexedDB = idb;  
+  if (Module["wasmBinaryFile"] && typeof Wasm === "object")
+  {
+    LoadCompressedFile (Module["wasmBinaryFile"], function(response) {
+	  Module.wasmBinary = response;
+      LoadCompressedJS(Module["codeUrl"], null, {id: "codeUrl"});
+    });
+  } 
+  else
+  { 
+    LoadCompressedJS(Module["asmUrl"], function() {
+      LoadCompressedJS(Module["codeUrl"], null, {id: "codeUrl"});
+    }, {id: "asmUrl"});
+  }
+}
+
+function LoadCode() {
+	try {
+	  var idb = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+	  var testRequest = idb.open("/idbfs-test");
+	  testRequest.onerror = function(e) { e.preventDefault(); SetIndexedDBAndLoadCompressedJS(); }
+	  testRequest.onsuccess = function() { testRequest.result.close(); SetIndexedDBAndLoadCompressedJS(idb); }
+	  setTimeout(function() { SetIndexedDBAndLoadCompressedJS(); }, 1000);
+	} catch (e) {
+	  SetIndexedDBAndLoadCompressedJS();
+	}
+}
+
+LoadCompressedFile (Module["memUrl"], function(response) {
+	Module["memoryInitializerRequest"].status = 200; // success
+	Module["memoryInitializerRequest"].response = response;
+	if (Module["memoryInitializerRequest"].callback)
+	  Module["memoryInitializerRequest"].callback();
+});
+
+LoadCode();
+
+
+
 // Identify user agent
 var browser = (function(){
     var ua= navigator.userAgent, tem, 
@@ -3377,7 +3409,7 @@ else
 var didShowErrorMessage = false;
 if (typeof window.onerror != 'function')
 {
-    window.onerror = function UnityErrorHandler(err, url, line)
+    function UnityErrorHandler(err, url, line)
     {
         if (Module.errorhandler && Module.errorhandler(err, url, line))
         {
@@ -3403,7 +3435,7 @@ if (typeof window.onerror != 'function')
         didShowErrorMessage = true;
         if (err.indexOf("DISABLE_EXCEPTION_CATCHING") != -1)
         {
-            alert ("An exception has occured, but exception handling has been disabled in this build. If you are the developer of this content, enable exceptions in your project's WebGL player settings to be able to catch the exception or see the stack trace.");
+            alert ("An exception has occurred, but exception handling has been disabled in this build. If you are the developer of this content, enable exceptions in your project's WebGL player settings to be able to catch the exception or see the stack trace.");
             return;
         }
         if (err.indexOf("Cannot enlarge memory arrays") != -1)
@@ -3416,12 +3448,81 @@ if (typeof window.onerror != 'function')
             alert ("The browser could not allocate enough memory for the WebGL content. If you are the developer of this content, try allocating less memory to your WebGL build in the WebGL player settings.");
             return;                
         }
-        alert ("An error occured running the Unity content on this page. See your browser's JavaScript console for more info. The error was:\n"+err);
+        alert ("An error occurred running the Unity content on this page. See your browser's JavaScript console for more info. The error was:\n"+err);
+    }
+    
+    Error.stackTraceLimit = 50;
+    
+    function demangleSymbol(symbol) {
+      if (Module.debugSymbols && Module.debugSymbols[symbol])
+        symbol = Module.debugSymbols[symbol];
+      // All C++ mangled symbols begin with '__Z', where preceding '_' is appended by Emscripten and '_Z' means that the symbol is C++ mangled.
+      if (!symbol.lastIndexOf('__Z', 0))
+        symbol = (Module.demangle || demangle)(symbol);
+      return symbol;
+    }
+    
+    function demangleError(err) {
+      // stacktrace example:
+      //
+      // [Chrome]
+      // Error
+      //    at Array.eWg (blob:http%3A//localhost%3A8080/7dd54af3-48c5-47e1-893f-5f1ef09ab62b:10:238896)
+      //    at Object.P7h [as dynCall_iiii] (blob:http%3A//localhost%3A8080/7dd54af3-48c5-47e1-893f-5f1ef09ab62b:28:33689)
+      //    at invoke_iiii (blob:http%3A//localhost%3A8080/972f149f-a28e-4ee9-a1c7-45e8c4b0998b:1:334638)
+      //    at DJd (blob:http%3A//localhost%3A8080/7dd54af3-48c5-47e1-893f-5f1ef09ab62b:15:260807)
+      //    at Object.dynCall (blob:http%3A//localhost%3A8080/972f149f-a28e-4ee9-a1c7-45e8c4b0998b:1:7492)
+      //    at browserIterationFunc (blob:http%3A//localhost%3A8080/972f149f-a28e-4ee9-a1c7-45e8c4b0998b:1:207518)
+      //    at Object.runIter (blob:http%3A//localhost%3A8080/972f149f-a28e-4ee9-a1c7-45e8c4b0998b:1:189915)
+      //
+      // [Firefox]
+      // eWg@blob:http://localhost:8080/0e677969-e11c-e24b-bb23-4f3afdbd5a3a:10:1
+      // P7h@blob:http://localhost:8080/0e677969-e11c-e24b-bb23-4f3afdbd5a3a:28:1
+      // invoke_iiii@blob:http://localhost:8080/67513e21-4cf2-de4e-a571-c6ee67cc2a72:1:334616
+      // DJd@blob:http://localhost:8080/0e677969-e11c-e24b-bb23-4f3afdbd5a3a:15:1
+      // Runtime.dynCall@blob:http://localhost:8080/67513e21-4cf2-de4e-a571-c6ee67cc2a72:1:7469
+      // _emscripten_set_main_loop/browserIterationFunc@blob:http://localhost:8080/67513e21-4cf2-de4e-a571-c6ee67cc2a72:1:207510
+      // Browser.mainLoop.runIter@blob:http://localhost:8080/67513e21-4cf2-de4e-a571-c6ee67cc2a72:1:189915
+      //
+      // [Safari]
+      // eWg@blob:http://localhost:8080/6efe7f5a-b930-45c3-9175-296366f9d9f4:10:238896
+      // P7h@blob:http://localhost:8080/6efe7f5a-b930-45c3-9175-296366f9d9f4:28:33689
+      // invoke_iiii@blob:http://localhost:8080/597cffca-fc52-4586-9da7-f9c8e591738b:1:334638
+      // DJd@blob:http://localhost:8080/6efe7f5a-b930-45c3-9175-296366f9d9f4:15:260809
+      // dynCall@blob:http://localhost:8080/597cffca-fc52-4586-9da7-f9c8e591738b:1:7496
+      // browserIterationFunc@blob:http://localhost:8080/597cffca-fc52-4586-9da7-f9c8e591738b:1:207525
+      // runIter@blob:http://localhost:8080/597cffca-fc52-4586-9da7-f9c8e591738b:1:189919
+      
+      var stackTraceFormat = browser.indexOf('Chrome') != -1 ? '(\\s+at\\s+)(([\\w\\d_\\.]*?)([\\w\\d_$]+)(/[\\w\\d_\\./]+|))(\\s+\\[.*\\]|)\\s*\\((blob:.*)\\)' : 
+                                                               '(\\s*)(([\\w\\d_\\.]*?)([\\w\\d_$]+)(/[\\w\\d_\\./]+|))(\\s+\\[.*\\]|)\\s*@(blob:.*)',
+          stackTraceFind = new RegExp(stackTraceFormat, 'g'),
+          stackTraceParse = new RegExp('^' + stackTraceFormat + '$');
+      return err.replace(stackTraceFind, function(trace) {
+        var errParse = trace.match(stackTraceParse);
+        var functionName = demangleSymbol(errParse[4]);
+        var blobParse = errParse[7].match(/^(blob:.*)(:\d+:\d+)$/);
+        var url = blobParse && Module.blobInfo && Module.blobInfo[blobParse[1]] && Module.blobInfo[blobParse[1]].url ? Module.blobInfo[blobParse[1]].url : 'blob';
+        return errParse[1] + functionName + (errParse[2] != functionName ? ' ['+ errParse[2] + ']' : '') +
+          ' (' + (blobParse ? url.substr(url.lastIndexOf('/') + 1) + blobParse[2] : errParse[7]) + ')';
+      });
+    };
+
+    window.onerror = function(err, url, line) {
+      if (!Module.debugSymbolsUrl || Module.debugSymbols)
+        return UnityErrorHandler(demangleError(err), url, line);
+      LoadCompressedJS(Module.debugSymbolsUrl, function() {
+        UnityErrorHandler(demangleError(err), url, line)
+      });
     }
 }
 
 function SetFullscreen(fullscreen)
 {
+    if (typeof runtimeInitialized === 'undefined' || !runtimeInitialized)
+    {
+        console.log ("Runtime not initialized yet.");
+        return;
+    }
     if (typeof JSEvents === 'undefined')
     {
         console.log ("Player not loaded yet.");
@@ -3489,8 +3590,8 @@ Module.expectedDataFileDownloads++;
     } else {
       throw 'using preloaded data can only be done on a web page or in a web worker';
     }
-    var PACKAGE_NAME = 'Build.data';
-    var REMOTE_PACKAGE_BASE = 'Build.data';
+    var PACKAGE_NAME = 'build.data';
+    var REMOTE_PACKAGE_BASE = 'build.data';
     if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
       Module['locateFile'] = Module['locateFilePackage'];
       Module.printErr('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
@@ -3499,9 +3600,9 @@ Module.expectedDataFileDownloads++;
                               Module['locateFile'](REMOTE_PACKAGE_BASE) :
                               ((Module['filePackagePrefixURL'] || '') + REMOTE_PACKAGE_BASE);
   
-      var REMOTE_PACKAGE_SIZE = 12924230;
-      var PACKAGE_UUID = '241b5d22-b2b9-481d-b23c-d9c0a2973b60';
-    
+    var REMOTE_PACKAGE_SIZE = metadata.remote_package_size;
+    var PACKAGE_UUID = metadata.package_uuid;
+  
     function fetchRemotePackage(packageName, packageSize, callback, errback) {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', packageName, true);
@@ -3536,9 +3637,16 @@ Module.expectedDataFileDownloads++;
           if (Module['setStatus']) Module['setStatus']('Downloading data...');
         }
       };
+      xhr.onerror = function(event) {
+        throw new Error("NetworkError for: " + packageName);
+      }
       xhr.onload = function(event) {
-        var packageData = xhr.response;
-        callback(packageData);
+        if (xhr.status == 200 || xhr.status == 304 || xhr.status == 206 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
+          var packageData = xhr.response;
+          callback(packageData);
+        } else {
+          throw new Error(xhr.statusText + " : " + xhr.responseURL);
+        }
       };
       xhr.send(null);
     };
@@ -3591,44 +3699,38 @@ Module['FS_createPath']('/Managed/mono', '2.0', true, true);
       },
       finish: function(byteArray) {
         var that = this;
-        Module['FS_createPreloadedFile'](this.name, null, byteArray, true, true, function() {
-          Module['removeRunDependency']('fp ' + that.name);
-        }, function() {
-          if (that.audio) {
-            Module['removeRunDependency']('fp ' + that.name); // workaround for chromium bug 124926 (still no audio with this, but at least we don't hang)
-          } else {
-            Module.printErr('Preloading file ' + that.name + ' failed');
-          }
-        }, false, true); // canOwn this data in the filesystem, it is a slide into the heap that will never change
+
+        Module['FS_createDataFile'](this.name, null, byteArray, true, true, true); // canOwn this data in the filesystem, it is a slide into the heap that will never change
+        Module['removeRunDependency']('fp ' + that.name);
+
         this.requests[this.name] = null;
-      },
+      }
     };
 
-      new DataRequest(0, 10111573, 0, 0).open('GET', '/data.unity3d');
-    new DataRequest(10111573, 10112358, 0, 0).open('GET', '/methods_pointedto_by_uievents.xml');
-    new DataRequest(10112358, 10116677, 0, 0).open('GET', '/preserved_derived_types.xml');
-    new DataRequest(10116677, 12021633, 0, 0).open('GET', '/Il2CppData/Metadata/global-metadata.dat');
-    new DataRequest(12021633, 12896605, 0, 0).open('GET', '/Resources/unity_default_resources');
-    new DataRequest(12896605, 12924230, 0, 0).open('GET', '/Managed/mono/2.0/machine.config');
+        var files = metadata.files;
+        for (i = 0; i < files.length; ++i) {
+          new DataRequest(files[i].start, files[i].end, files[i].crunched, files[i].audio).open('GET', files[i].filename);
+        }
 
+  
     function processPackageData(arrayBuffer) {
       Module.finishedDataFileDownloads++;
       assert(arrayBuffer, 'Loading data file failed.');
+      assert(arrayBuffer instanceof ArrayBuffer, 'bad input to processPackageData');
       var byteArray = new Uint8Array(arrayBuffer);
       var curr;
       
-      // Reuse the bytearray from the XHR as the source for file reads.
-      DataRequest.prototype.byteArray = byteArray;
-          DataRequest.prototype.requests["/data.unity3d"].onload();
-          DataRequest.prototype.requests["/methods_pointedto_by_uievents.xml"].onload();
-          DataRequest.prototype.requests["/preserved_derived_types.xml"].onload();
-          DataRequest.prototype.requests["/Il2CppData/Metadata/global-metadata.dat"].onload();
-          DataRequest.prototype.requests["/Resources/unity_default_resources"].onload();
-          DataRequest.prototype.requests["/Managed/mono/2.0/machine.config"].onload();
-          Module['removeRunDependency']('datafile_Build.data');
+        // Reuse the bytearray from the XHR as the source for file reads.
+        DataRequest.prototype.byteArray = byteArray;
+  
+          var files = metadata.files;
+          for (i = 0; i < files.length; ++i) {
+            DataRequest.prototype.requests[files[i].filename].onload();
+          }
+              Module['removeRunDependency']('datafile_build.data');
 
     };
-    Module['addRunDependency']('datafile_Build.data');
+    Module['addRunDependency']('datafile_build.data');
   
     if (!Module.preloadResults) Module.preloadResults = {};
   
@@ -3649,6 +3751,6 @@ Module['FS_createPath']('/Managed/mono', '2.0', true, true);
   }
 
  }
- loadPackage();
+ loadPackage({"files": [{"audio": 0, "start": 0, "crunched": 0, "end": 13897939, "filename": "/data.unity3d"}, {"audio": 0, "start": 13897939, "crunched": 0, "end": 13898837, "filename": "/methods_pointedto_by_uievents.xml"}, {"audio": 0, "start": 13898837, "crunched": 0, "end": 13903425, "filename": "/preserved_derived_types.xml"}, {"audio": 0, "start": 13903425, "crunched": 0, "end": 15815817, "filename": "/Il2CppData/Metadata/global-metadata.dat"}, {"audio": 0, "start": 15815817, "crunched": 0, "end": 16547909, "filename": "/Resources/unity_default_resources"}, {"audio": 0, "start": 16547909, "crunched": 0, "end": 16575534, "filename": "/Managed/mono/2.0/machine.config"}], "remote_package_size": 16575534, "package_uuid": "66861c58-b4de-48e5-a463-aa26453d7a0c"});
 
 })();
