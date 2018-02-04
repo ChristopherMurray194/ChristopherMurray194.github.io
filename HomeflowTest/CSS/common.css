@@ -1,0 +1,42 @@
+h1.results
+{
+	color:#0000FF;
+	font-weight:bold;
+}
+
+p.results
+{
+	color:#FF0000;
+}
+
+section.search_container
+{
+	margin-left:100px;
+	margin-right:100px;
+}
+
+div.table{ display:table; }
+div.tableRow{ display:table-row; }
+div.tableCell
+{
+	float:left;
+	width:25%;
+	dispaly:table-cell; 
+ }
+
+div.imageCell
+{
+	text-align:center;
+}
+
+div.priceCell
+{
+	text-align:center;
+}
+
+#moreBttn
+{
+	width:150px;
+	height:74px;
+	font-weight:bold;
+}

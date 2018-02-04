@@ -1,9 +1,14 @@
 <style>
-html, body{height:100%;}
+html
+{
+	height:100%;
+}
 body
 {
 	position:relative;
-	margin:0px;
+	margin:0;
+	padding:0;
+	min-height:100%;
 }
 
 @keyframes animate-bottom
@@ -53,8 +58,11 @@ p.cv{ margin:0px; font-size:20px; }
 #footer
 {
 	text-align:center;
-	padding:10px 0px;
-	bottom:0px;
+	left:0;
+	bottom:0;
+	right:0;
+	width:100%;
+	padding:1rem;
 	font-family: CaviarDreams, courier, sans-serif;
 }
 

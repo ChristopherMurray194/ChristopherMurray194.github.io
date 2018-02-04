@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!--HEAD-->
+<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<!--include jQuery ajax-cross-origin plugin-->
+	<script type="text/javascript" src="js/jquery.ajax-cross-origin.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="../CSS/styling.css">
+	<!--styling for search results list-->
+	<link rel="stylesheet" href="CSS/common.css">
+	<title>Final Year Project</title>
+	<meta charset="ISO-8859-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<!--BODY-->
+<body data-spy="scroll" data-target=".navbar-custom" data-offset="50">
+
+<div class="jumbotron text-center" id="main_banner">
+	<h1 id="heading">Sonar</h1>
+	<p id="sub_heading">Homeflow Test</p>
+</div>
+
+<div class="container-fluid" id="main_wrapper">
+	<!-- NAVIGATION BAR -->
+	<nav class="navbar navbar-inverse navbar-fixed-top navbar-custom navbar-footer">
+		<div class="navbar-inner">
+			<div class="container-fluid navbar-footer">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+					<script>
+						$(document).on('click','.navbar-collapse.in',function(e) 
+						{
+							if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) 
+							{
+								$(this).collapse('hide');
+							}
+						});
+					</script>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" id="nav-header" href="../index.html">CHRIS MURRAY</a>
+				</div>
+				<div class="collapse navbar-collapse" id="navbar">
+					<ul class="nav navbar-nav">
+						<!-- <li>
+							<a class="nav_element" href="../index.html#about_me" title="About Me">
+								About Me
+							</a>
+						</li> -->
+						<li>
+							<a class="nav_element" href="../CV/chris_murray_cv.pdf" title="View CV">
+								View CV
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../index.html#projects" title="Projects">
+								Projects
+							</a>
+						</li>
+						<li>
+							<a class="nav_element" href="../index.html#contact_me" title="Contact Me">
+								Contact
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- END OF NAVIGATION BAR -->
+	
+	<!------------------------------------------>
+	<!-- SONAR PORTAL CONTENT-->
+	<!------------------------------------------>
+	
+	<p>Press the 'Search' button to display data.</p>
+	
+	<section class="search_container">
+		<div class="searchbar">
+			<form action="">
+				<span>
+					<label for="apiKey">Input your API Key:</label>
+					<input type="text" id="apiKey" name="apiKey" value="" />
+				</span> <br />
+				<span>
+					<label for="buy">Buy:</label>
+					<input type="radio" id="buy" name="channel" value="sales" />
+					<label for="rent">Rent:</label>
+					<input type="radio" id="rent" name="channel" value="lettings" checked/>
+				</span><br />
+				<span>
+					<label for="location">Location:</label>
+					<input type="text" id="location" name="location" value="Enter Location" />
+				</span>
+				<span>
+					<label for="min_price">Price (£)</label>
+					<select name="min_price" id="min_price">
+						<option value="0">Min Price</option>
+						<option value="350">£350 PCM</option>
+						<option value="400">£400 PCM</option>
+						<option value="450">£450 PCM</option>
+						<option value="500">£500 PCM</option>
+						<option value="550">£550 PCM</option>
+						<option value="600">£600 PCM</option>
+						<option value="1000">£1000 PCM</option>
+						<option value="2000">£2000 PCM</option>
+						<option value="3000">£3000 PCM</option>
+					</select>
+					<select name="max_price" id="max_price">
+						<option value="0">Max Price</option>
+						<option value="350">£350 PCM</option>
+						<option value="400">£400 PCM</option>
+						<option value="450">£450 PCM</option>
+						<option value="500">£500 PCM</option>
+						<option value="550">£550 PCM</option>
+						<option value="600">£600 PCM</option>
+						<option value="1000">£1000 PCM</option>
+						<option value="2000">£2000 PCM</option>
+						<option value="3000">£3000 PCM</option>
+					</select>
+				</span>
+				<span>
+					<label for="min_beds">No. of Beds</label>
+					<select name="min_beds" id="min_beds">
+						<option value="0">No Min</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+					<select name="max_beds" id="max_beds">
+						<option value="0">No Max</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</span>
+				<span>
+					<label for="property_type">Property Type:</label>
+					<select name="property" id="property_type">
+						<option value="null">Any</option>
+						<option value="house">House</option>
+						<option value="flat">Flat</option>
+						<option value="bungalow">Bungalow</option>
+					</select>
+				</span>
+				<input type="button" value="Search" onClick="searchURL()" />
+			</form>
+		</div>
+	</section>
+	
+	<p> Currently only the channel, price and bed values have an effect on the search. </p>
+	
+	<h1 id="housesFound"></h1>
+	
+	<!-- LOAD API KEY FROM SEPERATE JAVASCRIPT -->
+	<!--<script type="text/javascript"  src="js/api_key.js"></script>-->
+	<!-- The script for listing properties -->
+	<script type="text/javascript"  src="js/list_properties.js"></script>
+	<!------------------------------------------>
+	<!--------END OF SONAR PORTAL CONENT-------->
+	<!------------------------------------------>
+	
+	<!-- FOOTER -->
+	<section id="footerSection">
+		<div class="row">
+			<div class="container-fluid navbar-footer" id="footer">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<p>
+						&copy; Christopher Murray 2016
+					</p>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+		</div>
+	</section>
+	<!-- END OF FOOTER -->
+</div>
+</body>
+</html>
