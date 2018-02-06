@@ -28,18 +28,19 @@ function searchURL()
 		console.log(requestURL);
 	}
 
-	// Request the JSON from the URL via ajax-cross-origin plugin
+	// Request the JSON from the URL using cors-anywhere
 	$.ajax(
 	{
-		crossOrigin: true,
+		//crossOrigin: true,
 		type: "GET",
-		url: requestURL,
-	}).done(function (dataText)
-	{
-		// Parse JSON string to Javascript object
-		var data = JSON.parse(dataText);
-	
-		handleData(data);
+		url: "https://cors-anywhere.herokuapp.com/" + requestURL,
+		success: function (data)
+		{
+			// Parse JSON string to Javascript objects
+			//var data = JSON.parse(dataText);
+		
+			handleData(data);
+		}
 	});
 }
 
