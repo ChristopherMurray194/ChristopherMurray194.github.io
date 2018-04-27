@@ -1,0 +1,3 @@
+<!-- <partial src="jumbotron_partial.html" page-heading="" page-subheading=""></partial> -->
+<!-- <partial src="navbar_partial.html"></partial> -->
+<!-- <partial src="footer_partial.html"></partial> -->

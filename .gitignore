@@ -1,0 +1,7 @@
+package-lock.json
+
+# Don't ignore gulpfile.js
+node_modules/*
+!node_modules/gulp-html-partial
+node_modules/gulp-html-partial/*
+!node_modules/gulp-html-partial/gulpfile.js
