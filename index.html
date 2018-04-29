@@ -20,56 +20,82 @@
     <!--BODY-->
     
     <body data-spy="scroll" data-target=".navbar-custom" data-offset="50">
-		<!-- JUMBOTRON -->
+        <!-- JUMBOTRON -->
         <div class="jumbotron text-center" id="main_banner">
             <img class="image-circle" src="images/headshot_saturated.png" alt="headshot"
             id="headshot" />
 			<h1 id="heading">Christopher Murray</h1>
             <p id="sub_heading">Computer Science graduate</p>
 		</div>
-		<!-- END OF JUMBOTRON -->
+        <!-- END OF JUMBOTRON -->
         <div class="container-fluid">
             <!-- NAVIGATION BAR -->
-            <nav class="navbar navbar-inverse navbar-fixed-top navbar-custom">
-                <div class="navbar-inner">
-                    <div class="container-fluid navbar-footer">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar"
-                            id="navbar-button">
-                                <script>
-                                    $(document).on('click','.navbar-collapse.in',function(e) 
-									{
-										if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) 
+            <nav id="navbar" class="navbar-inverse navbar-fixed-top">
+                <div class="container-fluid navbar-container nav-footer">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#link-container"
+                        id="navbar-button">	
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							
+						</button>	<a id="nav-header" href="index.html" title="Homepage">CHRIS MURRAY</a>
+						
+					</div>
+                    <div class="collapse navbar-collapse" id="link-container">
+                        <ul id="nav-link-list">
+                            <li>	<a class="nav-link" href="CV/chris_murray_cv.pdf" title="View CV">
+								View CV
+								</a>
+								
+							</li>
+                            <li>
+                                <div class="dropdown-container">
+                                    <script>
+                                        function showDropdown()
 										{
-											$(this).collapse('hide');
+											document.getElementById("projects-dropdown").classList.toggle("show");
 										}
-									});
-								</script>	<span class="icon-bar"></span>								<span class="icon-bar"></span>
-                                <span
-                                class="icon-bar"></span>
-							</button>	<a class="navbar-brand" id="nav-header" href="index.html">CHRIS MURRAY</a>
-						</div>
-                        <div class="collapse navbar-collapse" id="navbar">
-                            <ul class="nav navbar-nav">
-                                <!-- <li>
-									<a class="nav_element" href="#about_me" title="About Me">
-									About Me
-									</a>
-								</li> -->
-                                <li>	<a class="nav_element" href="CV/chris_murray_cv.pdf" title="View CV">
-									View CV
-									</a>
-								</li>
-                                <li>	<a class="nav_element" href="#projects" title="Projects">
-									Projects
-									</a>
-								</li>
-                                <li>	<a class="nav_element" href="#contact_me" title="Contact Me">
-									Contact
-									</a>
-								</li>
-							</ul>
-						</div>
+										
+										// If the user clicks anywhere that is not the button
+										window.onclick = function(e)
+										{
+											if(!e.target.matches("#projects-button"))
+											{
+												// Hide the dropdown
+												var dropdownList = document.getElementById("projects-dropdown");
+												if(dropdownList.classList.contains("show"))
+												{
+													dropdownList.classList.remove("show");
+												}
+											}
+										}
+									</script>
+                                    <button type="button" onclick="showDropdown()" id="projects-button"
+                                    class="nav-link" title="Projects">Projects <span class="caret"></span>
+										
+									</button>
+                                    <ul id="projects-dropdown">
+                                        <li>	<a class="nav-link dropdown-link" href="Projects/VillageDefender/villagedefender.html"
+                                            title="Village Defender">
+											Village Defender
+											</a>
+											
+										</li>
+                                        <li>	<a class="nav-link dropdown-link" href="Projects/final_project.html" title="Final Year Project">
+											Final Year Project
+											</a>
+											
+										</li>
+									</ul>
+								</div>
+							</li>
+                            <li>	<a class="nav-link" href="#contact_me" title="Contact Me">
+								Contact
+								</a>
+								
+							</li>
+						</ul>
 					</div>
 				</div>
 			</nav>
@@ -148,19 +174,18 @@
                     <div class="col-sm-2"></div>
 				</div>
 			</div>
-			
-			<!-- END OF MAIN CONTENT -->
-			<!-- FOOTER -->
-			<div class="row">
-				<div class="container-fluid navbar-footer" id="footer">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-8">
-						<p>&copy; Christopher Murray 2016</p>
+            <!-- END OF MAIN CONTENT -->
+            <!-- FOOTER -->
+            <div class="row">
+                <div class="container-fluid nav-footer" id="footer">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <p>&copy; Christopher Murray 2016</p>
 					</div>
-					<div class="col-sm-2"></div>
+                    <div class="col-sm-2"></div>
 				</div>
 			</div>
-			<!-- END OF FOOTER -->
+            <!-- END OF FOOTER -->
 		</div>
 	</body>
 	

@@ -10,6 +10,8 @@ body
 	padding:0;
 	min-height:100%;
 }
+a{ text-decoration:none; }
+a:hover{text-decoration:none; color:inherit;}
 
 @keyframes animate-bottom
 {
@@ -138,76 +140,112 @@ h3.font
 	animation-duration: 1.5s;
 }
 
-#nav-header
-{
-	color:white;
-	font-family: CaviarDreamsBold, courier, sans-serif;
-}
-#nav-header:hover
-{
-	color:#CD4F39;
-}
-
 /* DEFINE SECTION BACKGROUND COLOURS */
 #about_me{ background-color:#EDEDED; }
 .projects{ background-color:#FFFFFF; }
 #contact_me{ background-color:#EDEDED; }
 
-div.navbar-footer
-{
-	color:#fff;
-	background-color:#8B3626;
-}
-
-.navbar-custom
-{
-	border-bottom: 0px none rgba(0,0,0,0);
-}
-
-.navbar-custom  .navbar-inner
+/* NAVBAR STYLING */
+#navbar
 {
 	min-height:50px;
+	height:50px;
 	filter: none !important;
 	width:100%;
 	margin:0px;
 }
-
-.navbar-custom .navbar-inner ul.nav > li > a
+.nav-footer
 {
-	background:none;
+	/* background for both the navbar and footer */
+	background-color:#8B3626;
+	color:#fff;
+}
+div.navbar-container
+{
+	left:0px;
+	margin:0px;
+	padding:0px;	
+	width:100%;
+}
+
+div.navbar-header
+{
+	font-size:20px;
+	font-family: CaviarDreamsBold, courier, sans-serif;
+	height:100%;
+	padding: 14px 16px;
+}
+#nav-header 
+{
+	color:#fff;
+	padding:14px 16px;
+}
+#nav-header:hover
+{
+	color:#CD4F39;
+}
+/* The button that shows when navbar is collapsed */
+button.navbar-toggle{ margin:0; }
+
+#nav-link-list{ margin:0; }
+#nav-link-list > li
+{
+	display:inline-block;
+	margin:0;
+}
+.nav-link
+{
+	font-family: CaviarDreams, courier, sans-serif;
+	height:100%;
+	background-color:inherit;
 	color:#fff;
 	font-size: 20px;
-	padding-top: 15px;
-	padding-bottom: 15px;
+	border:none;
+	
+	padding:14px 16px;
 }
-
-.navbar-custom .navbar-inner ul.nav > li > a:hover
+#navbar > button
 {
-	background-color:#5E2612;
+	border:none;
+	outline:none;
 }
-
-.navbar-custom .navbar-inner ul.nav > .active > a
+.nav-link:hover
 {
-	background-color:#5E2612;
+	background-color:#641e16; 
 }
 
+/* DROPDOWN MENUS STYLING */
+#projects-button:focus
+{
+	/* Remove blue outline when button is clicked */
+	outline:0;
+}
+/* PROJECTS DROPDOWN DIV */
+#projects-dropdown
+{
+	display: none; /* Hide it */
+	background-color:#8B3626;
+	position:absolute;
+	margin:0px;
+	padding:0px;
+	min-width: 160px;
+	list-style-type: none;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+/* When the dropdown button is pressed, this class is added to the element */
+.show { display: block; }
+/* Dropdown list links override .nav-link styling */
+.dropdown-link
+{
+	display:block;
+}
+
+/* CONTACT ME */
 #networks_container
 {
 	display:inline-block;
 	width:200px;
 	height:50px;
 }
-
-a{ text-decoration:none; }
-a.nav_element
-{
-	display:inline-block;
-	font-family: CaviarDreams, courier, sans-serif;
-	height:100%;
-	color:#fff;
-	
-	padding:14px 16px;
-}
-a.nav_element:hover{ background-color:#333333; }	
 
 </style>
